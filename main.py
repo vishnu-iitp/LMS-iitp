@@ -1,4 +1,3 @@
-# main.py
 import sys
 import os
 from PyQt5 import QtWidgets, uic
@@ -11,14 +10,11 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt
 from db import DatabaseManager
 import matplotlib
-# Use Agg backend; FigureCanvasQTAgg will handle drawing in Qt widget
 matplotlib.use("Agg")
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import qdarkstyle
 
-
-# -------- Login Dialog --------
 class LoginDialog(QDialog):
     def __init__(self, db_manager):
         super().__init__()
@@ -50,7 +46,7 @@ class LoginDialog(QDialog):
         btn_login.clicked.connect(self.attempt_login)
         btn_register.clicked.connect(self.open_register)
 
-        self.user_info = None  # to store on successful login
+        self.user_info = None
 
     def attempt_login(self):
         username = self.username_edit.text().strip()
@@ -69,8 +65,6 @@ class LoginDialog(QDialog):
         dlg = RegisterDialog(self.db)
         dlg.exec_()
 
-
-# -------- Register Dialog --------
 class RegisterDialog(QDialog):
     def __init__(self, db_manager):
         super().__init__()
@@ -79,7 +73,6 @@ class RegisterDialog(QDialog):
         self.resize(400, 300)
         layout = QVBoxLayout()
 
-        # Member details
         self.fullname_edit = QLineEdit()
         self.fullname_edit.setPlaceholderText("Full Name")
         self.email_edit = QLineEdit()
@@ -87,7 +80,6 @@ class RegisterDialog(QDialog):
         self.phone_edit = QLineEdit()
         self.phone_edit.setPlaceholderText("Phone")
 
-        # User credentials
         self.username_edit = QLineEdit()
         self.username_edit.setPlaceholderText("Username")
         self.password_edit = QLineEdit()
@@ -137,8 +129,6 @@ class RegisterDialog(QDialog):
         else:
             QMessageBox.warning(self, "Registration Failed", "Username or email may already exist.")
 
-
-# -------- Tabs for MainWindow --------
 class BooksTab(QWidget):
     def __init__(self, db_manager):
         super().__init__()
@@ -147,8 +137,6 @@ class BooksTab(QWidget):
 
     def init_ui(self):
         layout = QVBoxLayout()
-
-        # Search bar
         search_layout = QHBoxLayout()
         self.search_edit = QLineEdit()
         self.search_edit.setPlaceholderText("Search by title or author")
@@ -158,14 +146,12 @@ class BooksTab(QWidget):
         search_layout.addWidget(btn_search)
         search_layout.addWidget(btn_refresh)
 
-        # Table of books
         self.table = QTableWidget()
         self.table.setColumnCount(8)
         headers = ["ID","Title","Author","Publisher","ISBN","Year","Total","Available"]
         self.table.setHorizontalHeaderLabels(headers)
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
-        # Add new book fields
         form_layout = QHBoxLayout()
         self.inp_title = QLineEdit(); self.inp_title.setPlaceholderText("Title")
         self.inp_author = QLineEdit(); self.inp_author.setPlaceholderText("Author")
@@ -187,12 +173,10 @@ class BooksTab(QWidget):
         layout.addLayout(form_layout)
         self.setLayout(layout)
 
-        # Connect signals
         btn_search.clicked.connect(self.search_books)
         btn_refresh.clicked.connect(self.load_all_books)
         btn_add.clicked.connect(self.add_book)
 
-        # Initial load
         self.load_all_books()
 
     def load_all_books(self):
@@ -254,7 +238,6 @@ class BooksTab(QWidget):
         else:
             QMessageBox.warning(self, "Failed", "Could not add book (maybe duplicate ISBN).")
 
-
 class IssueReturnTab(QWidget):
     def __init__(self, db_manager, current_member_id):
         super().__init__()
@@ -264,8 +247,6 @@ class IssueReturnTab(QWidget):
 
     def init_ui(self):
         layout = QVBoxLayout()
-
-        # Issue section
         issue_label = QLabel("Issue a Book:")
         self.combo_books = QComboBox()
         btn_issue = QPushButton("Issue Selected Book")
@@ -273,7 +254,6 @@ class IssueReturnTab(QWidget):
         issue_layout.addWidget(self.combo_books)
         issue_layout.addWidget(btn_issue)
 
-        # Return section
         return_label = QLabel("My Borrowed Books (Return below):")
         self.table_issued = QTableWidget()
         self.table_issued.setColumnCount(5)
@@ -352,7 +332,6 @@ class IssueReturnTab(QWidget):
         self.load_available_books()
         self.load_issued_books()
 
-
 class ReportsTab(QWidget):
     def __init__(self, db_manager):
         super().__init__()
@@ -364,7 +343,6 @@ class ReportsTab(QWidget):
         self.canvas = FigureCanvas(Figure(figsize=(5,4)))
         layout.addWidget(self.canvas)
         self.setLayout(layout)
-        # Initial plot
         self.plot_top_issued()
 
     def plot_top_issued(self):
@@ -382,7 +360,6 @@ class ReportsTab(QWidget):
         else:
             ax.text(0.5, 0.5, "No issues yet", ha='center', va='center')
         self.canvas.draw()
-
 
 class SettingsTab(QWidget):
     def __init__(self, app_ref):
@@ -403,8 +380,6 @@ class SettingsTab(QWidget):
         else:
             self.app.setStyleSheet("")
 
-
-# -------- Main Window --------
 class MainWindow(QMainWindow):
     def __init__(self, db_manager, user_info):
         super().__init__()
@@ -433,7 +408,6 @@ class MainWindow(QMainWindow):
         self._setup_tabs(tabs)
 
     def _setup_tabs(self, tabs_widget):
-        # Home tab
         home_tab = QWidget()
         hlayout = QVBoxLayout()
         lbl = QLabel(f"Welcome, {self.user_info.get('username')}!\nUse the tabs to navigate.")
@@ -442,29 +416,24 @@ class MainWindow(QMainWindow):
         home_tab.setLayout(hlayout)
         tabs_widget.addTab(home_tab, "Home")
 
-        # Books tab
         books_tab = BooksTab(self.db)
         tabs_widget.addTab(books_tab, "Books")
 
-        # Issue/Return tab
         issue_tab = IssueReturnTab(self.db, self.user_info.get('member_id'))
         tabs_widget.addTab(issue_tab, "Issue/Return")
 
-        # Reports tab
         reports_tab = ReportsTab(self.db)
         tabs_widget.addTab(reports_tab, "Reports")
-        # Refresh reports when tab selected
+
         index_reports = tabs_widget.indexOf(reports_tab)
         def on_tab_changed(idx):
             if idx == index_reports:
                 reports_tab.plot_top_issued()
         tabs_widget.currentChanged.connect(on_tab_changed)
 
-        # Settings tab
         settings_tab = SettingsTab(QApplication.instance())
         tabs_widget.addTab(settings_tab, "Settings")
 
-        # Logout menu
         menubar = self.menuBar()
         account_menu = menubar.addMenu("Account")
         logout_action = QtWidgets.QAction("Logout", self)
@@ -475,13 +444,9 @@ class MainWindow(QMainWindow):
         self.close()
         main()
 
-
-# -------- Application entry --------
 def main():
     app = QApplication(sys.argv)
-
-    # Database credentials - adjust as needed
-    SOCKET_PATH = "/var/lib/mysql/mysql.sock"  # change if different
+    SOCKET_PATH = "/var/lib/mysql/mysql.sock"
     DB_USER = "lms_user"
     DB_PASS = "your_strong_password"
     DB_NAME = "lms_db"
@@ -505,7 +470,6 @@ def main():
         sys.exit(app.exec_())
     else:
         sys.exit(0)
-
 
 if __name__ == "__main__":
     main()

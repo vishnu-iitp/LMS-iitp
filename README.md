@@ -53,41 +53,21 @@ This makes it easier to test the application immediately after setup.
 
 ## 🧪 How to Run
 
-1. **Install MariaDB** and create a new database.
-2. **Clone this repository**:
+1. **Clone this repository**:
     ```bash
     git clone https://github.com/yourusername/library-management-system.git
     cd library-management-system
     ```
-3. **Run the Python script** and create a `DatabaseManager` object:
-    ```python
-    from db import DatabaseManager
-
-    db = DatabaseManager(
-        user='your_db_user',
-        password='your_db_password',
-        database='your_db_name',
-        host='127.0.0.1',
-        port=3306
-    )
+2. **Install all the reuirements**
+    ```bash
+    pip install -r requirements
     ```
 
-You can now call methods like `add_book`, `create_member_and_user`, `issue_book`, and others.
+Install all the required libraries and then proceed to step 3 
 
 ---
 
-## ✏️ Example Usage
-
-```python
-# Add a book
-db.add_book("Python 101", "Michael Driscoll", "Self", "1234567890", 2021, 5)
-
-# Register a member and user
-db.create_member_and_user("John Doe", "john@example.com", "9876543210", "john123", "mypassword")
-
-# Login
-user = db.validate_login("john123", "mypassword")
-
-# Issue and return
-db.issue_book(book_id=1, member_id=user['member_id'])
-db.return_book(issue_id=1)
+3. **Run the GUI application**
+   ```bash
+   python3 main.py
+   ```

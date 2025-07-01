@@ -1,24 +1,57 @@
 # Library Management System (LMS) 📚
 
-This is a simple yet functional **Library Management System** built using **Python** and **MariaDB**.  
-It manages books, library members, issuing and returning of books, and basic analytics like top issued books.
+A simple yet feature-rich **Library Management System** built using **Python** and **MariaDB**.
 
-I built this project to understand how a backend system works with databases — including how to structure tables, write CRUD operations, implement login systems, and handle real-world use cases like issuing books with due dates.
+This project manages books, library members, book issuing/returning, and even offers useful analytics — all through a clean and responsive GUI.
+
+I created this project to learn backend development using Python and MariaDB, including topics like user authentication, CRUD operations, and real-world data relationships.
 
 ---
 
 ## 🔍 Overview
 
-The system is written in Python and connects to a MariaDB database using the `PyMySQL` library.  
-It runs as a backend module and can be easily integrated with a GUI (like Tkinter) or a web frontend (like Flask/Django) if needed.
+The LMS uses **PyQt5** for the graphical interface and **MariaDB** as the database engine.  
+It supports user authentication, book inventory, member management, issuing/returning books, and visual reports.
 
-### Key Functionalities:
-- Add/search books
-- Register members and users (with roles)
-- Login authentication with hashed passwords
-- Issue and return books
-- View current issued books
-- Simple analytics: top issued books
+### 🔑 Core Features:
+- 🔎 Search and manage books
+- 👤 Add/edit members and users (with login)
+- 🔐 Password hashing using `hashlib`
+- 📆 Issue/return books with due dates
+- 📊 Top issued books chart
+- 🌗 Dark Mode UI toggle
+
+---
+
+## ✨ Quick Tour (Screenshots)
+
+### 🏠 Home Tab
+Welcome screen with personalized greeting and navigation instructions.
+![Home Tab](/mnt/data/home.png)
+
+---
+
+### 📚 Books Tab
+Search, view, and add books with detailed fields like title, author, publisher, ISBN, year, total copies, and available copies.
+![Books Tab](/mnt/data/books%20tab.png)
+
+---
+
+### 🔁 Issue/Return Tab
+Allows users to issue available books and return previously borrowed ones. Displays book details, issue date, and due date.
+![Issue Return Tab](/mnt/data/issue%20return%20tab.png)
+
+---
+
+### 📈 Reports Tab
+Visualizes the top issued books using a clean bar chart powered by `matplotlib`.
+![Reports Tab](/mnt/data/reports.png)
+
+---
+
+### ⚙️ Settings Tab
+Toggle dark mode to switch between light and dark themes.
+![Settings Tab](/mnt/data/settings.png)
 
 ---
 
@@ -26,48 +59,58 @@ It runs as a backend module and can be easily integrated with a GUI (like Tkinte
 
 - **Python 3**
 - **MariaDB**
-- **PyMySQL** (for database connection)
-- **hashlib** (for password hashing)
-- **datetime** (for date calculations)
+- **PyMySQL** — Database connection
+- **PyQt5** — GUI
+- **hashlib** — Password hashing
+- **matplotlib** — Charting
+- **datetime** — Due date calculations
 
 ---
 
 ## 📦 Database Tables
 
-The project automatically creates the following tables if they don’t exist:
+The system auto-creates these tables if they don't exist:
 - `books`
 - `members`
 - `users`
 - `issued_books`
 
-Each table uses proper relationships via foreign keys, ensuring consistency in the data.
+All with proper foreign key relationships for data consistency.
 
 ---
 
-## 📘 Sample Books
+## 📘 Sample Data
 
-If the database is empty, the system seeds it with 10 popular classic books like *1984*, *The Great Gatsby*, *The Hobbit*, etc.  
-This makes it easier to test the application immediately after setup.
+If your database starts empty, 10 classic books (e.g., *1984*, *The Hobbit*, *Fahrenheit 451*) are automatically added for testing purposes.
 
 ---
 
-## 🧪 How to Run
+## 🚀 How to Run
 
-1. **Clone this repository**:
+1. **Clone the repository**  
     ```bash
     git clone https://github.com/yourusername/library-management-system.git
     cd library-management-system
     ```
-2. **Install all the reuirements**
+
+2. **Install dependencies**  
     ```bash
-    pip install -r requirements
+    pip install -r requirements.txt
     ```
 
-Install all the required libraries and then proceed to step 3 
+3. **Run the GUI application**  
+    ```bash
+    python3 main.py
+    ```
 
 ---
 
-3. **Run the GUI application**
-   ```bash
-   python3 main.py
-   ```
+## 🙌 Contributing
+
+Pull requests are welcome! If you'd like to add a feature or fix a bug, feel free to fork the repo and make a PR.
+
+---
+
+## 📄 License
+
+This project is open-source under the MIT License.

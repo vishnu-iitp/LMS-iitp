@@ -15,7 +15,9 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import qdarkstyle
 
+# -------- Login Dialog --------
 class LoginDialog(QDialog):
+    # (unchanged login dialog code)
     def __init__(self, db_manager):
         super().__init__()
         self.db = db_manager
@@ -46,7 +48,7 @@ class LoginDialog(QDialog):
         btn_login.clicked.connect(self.attempt_login)
         btn_register.clicked.connect(self.open_register)
 
-        self.user_info = None
+        self.user_info = None  # to store on successful login
 
     def attempt_login(self):
         username = self.username_edit.text().strip()
@@ -65,7 +67,9 @@ class LoginDialog(QDialog):
         dlg = RegisterDialog(self.db)
         dlg.exec_()
 
+# -------- Register Dialog --------
 class RegisterDialog(QDialog):
+    # (unchanged register dialog code)
     def __init__(self, db_manager):
         super().__init__()
         self.db = db_manager
@@ -73,6 +77,7 @@ class RegisterDialog(QDialog):
         self.resize(400, 300)
         layout = QVBoxLayout()
 
+        # Member details
         self.fullname_edit = QLineEdit()
         self.fullname_edit.setPlaceholderText("Full Name")
         self.email_edit = QLineEdit()
@@ -80,6 +85,7 @@ class RegisterDialog(QDialog):
         self.phone_edit = QLineEdit()
         self.phone_edit.setPlaceholderText("Phone")
 
+        # User credentials
         self.username_edit = QLineEdit()
         self.username_edit.setPlaceholderText("Username")
         self.password_edit = QLineEdit()
@@ -129,7 +135,9 @@ class RegisterDialog(QDialog):
         else:
             QMessageBox.warning(self, "Registration Failed", "Username or email may already exist.")
 
+# -------- Tabs for MainWindow --------
 class BooksTab(QWidget):
+    # (unchanged BooksTab code)
     def __init__(self, db_manager):
         super().__init__()
         self.db = db_manager
@@ -137,6 +145,8 @@ class BooksTab(QWidget):
 
     def init_ui(self):
         layout = QVBoxLayout()
+
+        # Search bar
         search_layout = QHBoxLayout()
         self.search_edit = QLineEdit()
         self.search_edit.setPlaceholderText("Search by title or author")
@@ -146,12 +156,14 @@ class BooksTab(QWidget):
         search_layout.addWidget(btn_search)
         search_layout.addWidget(btn_refresh)
 
+        # Table of books
         self.table = QTableWidget()
         self.table.setColumnCount(8)
         headers = ["ID","Title","Author","Publisher","ISBN","Year","Total","Available"]
         self.table.setHorizontalHeaderLabels(headers)
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
+        # Add new book fields
         form_layout = QHBoxLayout()
         self.inp_title = QLineEdit(); self.inp_title.setPlaceholderText("Title")
         self.inp_author = QLineEdit(); self.inp_author.setPlaceholderText("Author")
@@ -173,10 +185,12 @@ class BooksTab(QWidget):
         layout.addLayout(form_layout)
         self.setLayout(layout)
 
+        # Connect signals
         btn_search.clicked.connect(self.search_books)
         btn_refresh.clicked.connect(self.load_all_books)
         btn_add.clicked.connect(self.add_book)
 
+        # Initial load
         self.load_all_books()
 
     def load_all_books(self):
@@ -239,6 +253,7 @@ class BooksTab(QWidget):
             QMessageBox.warning(self, "Failed", "Could not add book (maybe duplicate ISBN).")
 
 class IssueReturnTab(QWidget):
+    # (unchanged IssueReturnTab code)
     def __init__(self, db_manager, current_member_id):
         super().__init__()
         self.db = db_manager
@@ -247,6 +262,8 @@ class IssueReturnTab(QWidget):
 
     def init_ui(self):
         layout = QVBoxLayout()
+
+        # Issue section
         issue_label = QLabel("Issue a Book:")
         self.combo_books = QComboBox()
         btn_issue = QPushButton("Issue Selected Book")
@@ -254,6 +271,7 @@ class IssueReturnTab(QWidget):
         issue_layout.addWidget(self.combo_books)
         issue_layout.addWidget(btn_issue)
 
+        # Return section
         return_label = QLabel("My Borrowed Books (Return below):")
         self.table_issued = QTableWidget()
         self.table_issued.setColumnCount(5)
@@ -333,6 +351,7 @@ class IssueReturnTab(QWidget):
         self.load_issued_books()
 
 class ReportsTab(QWidget):
+    # (unchanged ReportsTab code)
     def __init__(self, db_manager):
         super().__init__()
         self.db = db_manager
@@ -343,6 +362,7 @@ class ReportsTab(QWidget):
         self.canvas = FigureCanvas(Figure(figsize=(5,4)))
         layout.addWidget(self.canvas)
         self.setLayout(layout)
+        # Initial plot
         self.plot_top_issued()
 
     def plot_top_issued(self):
@@ -362,6 +382,7 @@ class ReportsTab(QWidget):
         self.canvas.draw()
 
 class SettingsTab(QWidget):
+    # (unchanged SettingsTab code)
     def __init__(self, app_ref):
         super().__init__()
         self.app = app_ref
@@ -385,13 +406,14 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.db = db_manager
         self.user_info = user_info
-        self.setWindowTitle(f"LMS - Welcome {self.user_info.get('username')}")
+        # Delay setting title until after UI load
         self.resize(800, 600)
 
         ui_path = os.path.join(os.path.dirname(__file__), "home.ui")
         if os.path.exists(ui_path):
             try:
                 uic.loadUi(ui_path, self)
+                # If the UI has a tabWidget, use it
                 if hasattr(self, 'tabWidget'):
                     self._setup_tabs(self.tabWidget)
                 else:
@@ -402,12 +424,16 @@ class MainWindow(QMainWindow):
         else:
             self._create_central_tabs()
 
+        # Now set window title with the username
+        self.setWindowTitle(f"LMS - Welcome {self.user_info.get('username')}")
+
     def _create_central_tabs(self):
         tabs = QtWidgets.QTabWidget()
         self.setCentralWidget(tabs)
         self._setup_tabs(tabs)
 
     def _setup_tabs(self, tabs_widget):
+        # Home tab
         home_tab = QWidget()
         hlayout = QVBoxLayout()
         lbl = QLabel(f"Welcome, {self.user_info.get('username')}!\nUse the tabs to navigate.")
@@ -416,36 +442,48 @@ class MainWindow(QMainWindow):
         home_tab.setLayout(hlayout)
         tabs_widget.addTab(home_tab, "Home")
 
+        # Books tab
         books_tab = BooksTab(self.db)
         tabs_widget.addTab(books_tab, "Books")
 
+        # Issue/Return tab
         issue_tab = IssueReturnTab(self.db, self.user_info.get('member_id'))
         tabs_widget.addTab(issue_tab, "Issue/Return")
 
+        # Reports tab
         reports_tab = ReportsTab(self.db)
         tabs_widget.addTab(reports_tab, "Reports")
-
+        # Refresh reports when tab selected
         index_reports = tabs_widget.indexOf(reports_tab)
         def on_tab_changed(idx):
             if idx == index_reports:
                 reports_tab.plot_top_issued()
         tabs_widget.currentChanged.connect(on_tab_changed)
 
+        # Settings tab
         settings_tab = SettingsTab(QApplication.instance())
         tabs_widget.addTab(settings_tab, "Settings")
 
-        menubar = self.menuBar()
-        account_menu = menubar.addMenu("Account")
-        logout_action = QtWidgets.QAction("Logout", self)
-        account_menu.addAction(logout_action)
-        logout_action.triggered.connect(self.logout)
+        # Setup logout menu/action
+        if hasattr(self, 'actionLogout'):
+            # Connect existing UI action to logout
+            self.actionLogout.triggered.connect(self.logout)
+        else:
+            menubar = self.menuBar()
+            account_menu = menubar.addMenu("Account")
+            logout_action = QtWidgets.QAction("Logout", self)
+            account_menu.addAction(logout_action)
+            logout_action.triggered.connect(self.logout)
 
     def logout(self):
         self.close()
         main()
 
+# -------- Application entry --------
 def main():
     app = QApplication(sys.argv)
+
+    # Database credentials - adjust as needed
     SOCKET_PATH = "/var/lib/mysql/mysql.sock"
     DB_USER = "lms_user"
     DB_PASS = "your_strong_password"
@@ -473,3 +511,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

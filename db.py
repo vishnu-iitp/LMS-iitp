@@ -4,6 +4,7 @@ from datetime import date, timedelta
 import hashlib
 
 class DatabaseManager:
+
     def __init__(self, user, password, database, unix_socket=None, host=None, port=None):
         conn_args = {
             "user": user,
@@ -18,93 +19,10 @@ class DatabaseManager:
         else:
             conn_args["host"] = host or "127.0.0.1"
             conn_args["port"] = port or 3306
+
         self.conn = pymysql.connect(**conn_args)
-        self._create_tables_if_not_exist()
-        self._seed_sample_books_if_empty()
 
-    def _create_tables_if_not_exist(self):
-        with self.conn.cursor() as cursor:
-            cursor.execute("""
-            CREATE TABLE IF NOT EXISTS books (
-              book_id INT AUTO_INCREMENT PRIMARY KEY,
-              title VARCHAR(255) NOT NULL,
-              author VARCHAR(255),
-              publisher VARCHAR(255),
-              isbn VARCHAR(20) UNIQUE,
-              year_published YEAR,
-              total_copies INT NOT NULL DEFAULT 1,
-              available_copies INT NOT NULL DEFAULT 1,
-              created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-            ) ENGINE=InnoDB;
-            """)
-            cursor.execute("""
-            CREATE TABLE IF NOT EXISTS members (
-              member_id INT AUTO_INCREMENT PRIMARY KEY,
-              full_name VARCHAR(255) NOT NULL,
-              email VARCHAR(255) UNIQUE,
-              phone VARCHAR(20),
-              join_date DATE DEFAULT CURRENT_DATE,
-              status ENUM('active','suspended','alumni') DEFAULT 'active'
-            ) ENGINE=InnoDB;
-            """)
-            cursor.execute("""
-            CREATE TABLE IF NOT EXISTS users (
-              user_id INT AUTO_INCREMENT PRIMARY KEY,
-              member_id INT NULL,
-              username VARCHAR(50) NOT NULL UNIQUE,
-              password_hash VARCHAR(255) NOT NULL,
-              role ENUM('member','librarian','admin') NOT NULL DEFAULT 'member',
-              created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-              FOREIGN KEY (member_id) REFERENCES members(member_id)
-                ON DELETE SET NULL
-                ON UPDATE CASCADE
-            ) ENGINE=InnoDB;
-            """)
-            cursor.execute("""
-            CREATE TABLE IF NOT EXISTS issued_books (
-              issue_id INT AUTO_INCREMENT PRIMARY KEY,
-              book_id INT NOT NULL,
-              member_id INT NOT NULL,
-              issue_date DATE NOT NULL DEFAULT CURRENT_DATE,
-              due_date DATE NOT NULL,
-              return_date DATE DEFAULT NULL,
-              FOREIGN KEY (book_id) REFERENCES books(book_id)
-                ON DELETE CASCADE
-                ON UPDATE CASCADE,
-              FOREIGN KEY (member_id) REFERENCES members(member_id)
-                ON DELETE CASCADE
-                ON UPDATE CASCADE,
-              INDEX(book_id),
-              INDEX(member_id)
-            ) ENGINE=InnoDB;
-            """)
-
-    def _seed_sample_books_if_empty(self):
-        with self.conn.cursor() as cursor:
-            cursor.execute("SELECT COUNT(*) AS cnt FROM books;")
-            result = cursor.fetchone()
-            if result and result.get('cnt', 0) == 0:
-                sample_books = [
-                    ("1984","George Orwell","Secker & Warburg","9780451524935",1949,5),
-                    ("Pride and Prejudice","Jane Austen","T. Egerton","9781503290563",1813,3),
-                    ("To Kill a Mockingbird","Harper Lee","J.B. Lippincott & Co.","9780061120084",1960,4),
-                    ("The Great Gatsby","F. Scott Fitzgerald","Charles Scribner's Sons","9780743273565",1925,4),
-                    ("Moby Dick","Herman Melville","Richard Bentley","9781503280786",1851,2),
-                    ("War and Peace","Leo Tolstoy","The Russian Messenger","9780199232765",1869,2),
-                    ("Hamlet","William Shakespeare","N/A","9780451526922",1603,3),
-                    ("The Catcher in the Rye","J.D. Salinger","Little, Brown and Company","9780316769488",1951,3),
-                    ("The Hobbit","J.R.R. Tolkien","George Allen & Unwin","9780547928227",1937,5),
-                    ("Fahrenheit 451","Ray Bradbury","Ballantine Books","9781451673319",1953,4),
-                ]
-                for title, author, publisher, isbn, year, copies in sample_books:
-                    try:
-                        cursor.execute("""
-                        INSERT INTO books 
-                          (title, author, publisher, isbn, year_published, total_copies, available_copies)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s);
-                        """, (title, author, publisher, isbn, year, copies, copies))
-                    except Exception as e:
-                        print(f"Seed book insertion error: {e}")
+    # ---------- User/Auth methods ----------
 
     def hash_password(self, plain_text_password: str) -> str:
         return hashlib.sha256(plain_text_password.encode('utf-8')).hexdigest()
@@ -118,17 +36,16 @@ class DatabaseManager:
                     VALUES (%s, %s, %s);
                 """, (full_name, email, phone))
                 member_id = cursor.lastrowid
-            except pymysql.err.IntegrityError as e:
-                print("Member creation failed:", e)
+            except pymysql.err.IntegrityError:
                 return False
+
             try:
                 cursor.execute("""
                     INSERT INTO users (member_id, username, password_hash, role)
                     VALUES (%s, %s, %s, 'member');
                 """, (member_id, username, pwd_hash))
                 return True
-            except pymysql.err.IntegrityError as e:
-                print("User creation failed:", e)
+            except pymysql.err.IntegrityError:
                 cursor.execute("DELETE FROM members WHERE member_id=%s;", (member_id,))
                 return False
 
@@ -148,8 +65,9 @@ class DatabaseManager:
                     'username': username,
                     'role': row['role']
                 }
-            else:
-                return None
+            return None
+
+    # ---------- Book operations ----------
 
     def get_all_books(self):
         with self.conn.cursor() as cursor:
@@ -174,14 +92,15 @@ class DatabaseManager:
                     VALUES (%s, %s, %s, %s, %s, %s, %s);
                 """, (title, author, publisher, isbn, year_published, total_copies, total_copies))
                 return True
-            except pymysql.err.IntegrityError as e:
-                print("Add book failed:", e)
+            except pymysql.err.IntegrityError:
                 return False
 
     def get_available_books(self):
         with self.conn.cursor() as cursor:
             cursor.execute("SELECT * FROM books WHERE available_copies > 0;")
             return cursor.fetchall()
+
+    # ---------- Issue / Return operations ----------
 
     def issue_book(self, book_id, member_id, days=14) -> bool:
         today = date.today()
@@ -192,17 +111,18 @@ class DatabaseManager:
                     INSERT INTO issued_books (book_id, member_id, issue_date, due_date)
                     VALUES (%s, %s, %s, %s);
                 """, (book_id, member_id, today, due))
+
                 cursor.execute("""
                     UPDATE books
                     SET available_copies = available_copies - 1
                     WHERE book_id=%s AND available_copies > 0;
                 """, (book_id,))
+
                 if cursor.rowcount == 0:
                     self.conn.rollback()
                     return False
                 return True
-            except Exception as e:
-                print("Issue book failed:", e)
+            except Exception:
                 self.conn.rollback()
                 return False
 
@@ -239,10 +159,11 @@ class DatabaseManager:
                     WHERE book_id=%s;
                 """, (book_id,))
                 return True
-            except Exception as e:
-                print("Return book failed:", e)
+            except Exception:
                 self.conn.rollback()
                 return False
+
+    # ---------- Analytics ----------
 
     def get_top_issued_books(self, limit=10):
         with self.conn.cursor() as cursor:
@@ -256,5 +177,8 @@ class DatabaseManager:
             """, (limit,))
             return cursor.fetchall()
 
+    # ---------- Close ----------
+
     def close(self):
         self.conn.close()
+

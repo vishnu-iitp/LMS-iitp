@@ -27,31 +27,31 @@ It supports user authentication, book inventory, member management, issuing/retu
 
 ### 🏠 Home Tab
 Welcome screen with personalized greeting and navigation instructions.
-![Home Tab](/mnt/data/home.png)
+![Home Tab](/assets/home.png)
 
 ---
 
 ### 📚 Books Tab
 Search, view, and add books with detailed fields like title, author, publisher, ISBN, year, total copies, and available copies.
-![Books Tab](/mnt/data/books%20tab.png)
+![Books Tab](/assets/books%20tab.png)
 
 ---
 
 ### 🔁 Issue/Return Tab
 Allows users to issue available books and return previously borrowed ones. Displays book details, issue date, and due date.
-![Issue Return Tab](/mnt/data/issue%20return%20tab.png)
+![Issue Return Tab](/assets/issue%20return%20tab.png)
 
 ---
 
 ### 📈 Reports Tab
 Visualizes the top issued books using a clean bar chart powered by `matplotlib`.
-![Reports Tab](/mnt/data/reports.png)
+![Reports Tab](/assets/reports.png)
 
 ---
 
 ### ⚙️ Settings Tab
 Toggle dark mode to switch between light and dark themes.
-![Settings Tab](/mnt/data/settings.png)
+![Settings Tab](/assets/settings.png)
 
 ---
 

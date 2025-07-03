@@ -98,7 +98,7 @@ If your database starts empty, 10 classic books (e.g., *1984*, *The Hobbit*, *Fa
     pip install -r requirements.txt
     ```
 
-3. **Create The database and run the sql code **  
+3. **Create The database and run the sql code**  
     I. Open Mysql workbench<br>
     II. Use the local connection ( default username and password is root )<br>
     III. Create schema (right click on lef pannel (Schema ) >>click on create schema  >> name it lms_db >> apply >> apply >> finish<br>

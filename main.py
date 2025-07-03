@@ -484,9 +484,10 @@ def main():
     app = QApplication(sys.argv)
 
     # Database credentials - adjust as needed
-    SOCKET_PATH = "/var/lib/mysql/mysql.sock"
-    DB_USER = "lms_user"
-    DB_PASS = "your_strong_password"
+    DB_HOST = "127.0.0.1"
+    DB_PORT = 3306
+    DB_USER = "root"  # or your MySQL username
+    DB_PASS = "root"
     DB_NAME = "lms_db"
 
     try:
@@ -494,8 +495,10 @@ def main():
             user=DB_USER,
             password=DB_PASS,
             database=DB_NAME,
-            unix_socket=SOCKET_PATH
+            host=DB_HOST,
+            port=DB_PORT
         )
+
     except Exception as e:
         QMessageBox.critical(None, "Database Error", f"Cannot connect to database: {e}")
         sys.exit(1)

@@ -87,7 +87,7 @@ If your database starts empty, 10 classic books (e.g., *1984*, *The Hobbit*, *Fa
 
 ## 🚀 How to Run
 
-1. **Clone the repository**  
+1. **Clone the repository (open powershell)**  
     ```bash
     git clone https://github.com/yourusername/library-management-system.git
     cd library-management-system
@@ -98,10 +98,18 @@ If your database starts empty, 10 classic books (e.g., *1984*, *The Hobbit*, *Fa
     pip install -r requirements.txt
     ```
 
-3. **Run the GUI application**  
-    ```bash
-    python3 main.py
+3. **Create The database and run the sql code **  
+    I. Open Mysql workbench
+    II. Use the local connection ( default username and password is root )
+    III. Create schema (right click on lef pannel (Schema ) >>click on create schema  >> name it lms_db >> apply >> apply >> finish
+    IV. file > open sql script >> choose the lms_db.sql >> click on thunder ⚡ icon to run it
+4. **Now Run the Main.py file (open powershell )
+    ```python
+    python main.py
     ```
+ 
+5. **first register and then login with the same username and password
+6. **Enjoy**
 
 ---
 

@@ -99,16 +99,16 @@ If your database starts empty, 10 classic books (e.g., *1984*, *The Hobbit*, *Fa
     ```
 
 3. **Create The database and run the sql code **  
-    I. Open Mysql workbench
-    II. Use the local connection ( default username and password is root )
-    III. Create schema (right click on lef pannel (Schema ) >>click on create schema  >> name it lms_db >> apply >> apply >> finish
-    IV. file > open sql script >> choose the lms_db.sql >> click on thunder ⚡ icon to run it
-4. **Now Run the Main.py file (open powershell )
+    I. Open Mysql workbench<br>
+    II. Use the local connection ( default username and password is root )<br>
+    III. Create schema (right click on lef pannel (Schema ) >>click on create schema  >> name it lms_db >> apply >> apply >> finish<br>
+    IV. file > open sql script >> choose the lms_db.sql >> click on thunder ⚡ icon to run it<br>
+4. **Now Run the Main.py file (open powershell )**
     ```python
     python main.py
     ```
  
-5. **first register and then login with the same username and password
+5. **first register and then login with the same username and password**
 6. **Enjoy**
 
 ---

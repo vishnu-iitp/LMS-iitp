@@ -22,7 +22,7 @@ class DatabaseManager:
 
         self.conn = pymysql.connect(**conn_args)
 
-    # ---------- User/Auth methods ----------
+    # iss functon me password hassing and user authorization ho rha h 
 
     def hash_password(self, plain_text_password: str) -> str:
         return hashlib.sha256(plain_text_password.encode('utf-8')).hexdigest()
@@ -67,7 +67,7 @@ class DatabaseManager:
                 }
             return None
 
-    # ---------- Book operations ----------
+    # book ka sara operation sql query ke through
 
     def get_all_books(self):
         with self.conn.cursor() as cursor:
@@ -100,7 +100,7 @@ class DatabaseManager:
             cursor.execute("SELECT * FROM books WHERE available_copies > 0;")
             return cursor.fetchall()
 
-    # ---------- Issue / Return operations ----------
+    # book issue aur return operation 
 
     def issue_book(self, book_id, member_id, days=14) -> bool:
         today = date.today()
@@ -163,7 +163,7 @@ class DatabaseManager:
                 self.conn.rollback()
                 return False
 
-    # ---------- Analytics ----------
+    # graph ke liye most issued books ka data yaha se 
 
     def get_top_issued_books(self, limit=10):
         with self.conn.cursor() as cursor:
@@ -177,7 +177,7 @@ class DatabaseManager:
             """, (limit,))
             return cursor.fetchall()
 
-    # ---------- Close ----------
+    # yaha se connection close
 
     def close(self):
         self.conn.close()

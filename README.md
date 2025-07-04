@@ -86,7 +86,7 @@ If your database starts empty, 10 classic books (e.g., *1984*, *The Hobbit*, *Fa
 ---
 
 ## 🚀 How to Run
-**Important**
+**Important**<br>
 run all this command in one single terminal , otherwise use full path for files 
 1. **Clone the repository (open powershell)**  
     ```bash

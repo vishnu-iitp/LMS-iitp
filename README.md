@@ -105,7 +105,7 @@ run all this command in one single terminal , otherwise use full path for files
     ```
 
 4. **Create The database and run the sql code** <br>
-    I. create first local connection (if not alreay created )
+    I. create first local connection (skip to step II if already created )
    ```bash
    mysql -u root -p
    ```

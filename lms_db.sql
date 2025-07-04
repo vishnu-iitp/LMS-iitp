@@ -47,7 +47,7 @@ CREATE TABLE `issued_books` (
   `issue_id` int(11) NOT NULL AUTO_INCREMENT,
   `book_id` int(11) NOT NULL,
   `member_id` int(11) NOT NULL,
-  `issue_date` date NOT NULL DEFAULT curdate(),
+  `issue_date` date NOT NULL DEFAULT (CURRENT_DATE),
   `due_date` date NOT NULL,
   `return_date` date DEFAULT NULL,
   PRIMARY KEY (`issue_id`),
@@ -73,7 +73,7 @@ CREATE TABLE `members` (
   `full_name` varchar(255) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
-  `join_date` date DEFAULT curdate(),
+  `join_date` date DEFAULT (CURRENT_DATE),
   `status` enum('active','suspended','alumni') DEFAULT 'active',
   PRIMARY KEY (`member_id`),
   UNIQUE KEY `email` (`email`)
@@ -83,7 +83,7 @@ SET character_set_client = @saved_cs_client;
 LOCK TABLES `members` WRITE;
 ALTER TABLE `members` DISABLE KEYS;
 INSERT INTO `members` VALUES
-(1,'vishnu kumar','kumarvish****@gmai.com','81029*****','2025-06-10','active');
+(1,'vishnu kumar','kumarvishun24@gmai.com','8102988587','2025-06-10','active');
 ALTER TABLE `members` ENABLE KEYS;
 UNLOCK TABLES;
 
@@ -119,4 +119,3 @@ SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT;
 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS;
 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION;
 SET SQL_NOTES=@OLD_SQL_NOTES;
-

@@ -104,7 +104,7 @@ run all this command in one single terminal , otherwise use full path for files
     pip install -r requirements.txt
     ```
 
-4. **Create The database and run the sql code**
+4. **Create The database and run the sql code** <br>
     I. create first local connection (if not alreay created )
    ```bash
    mysql -u root -p

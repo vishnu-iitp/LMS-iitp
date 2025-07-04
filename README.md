@@ -86,9 +86,11 @@ If your database starts empty, 10 classic books (e.g., *1984*, *The Hobbit*, *Fa
 ---
 
 ## 🚀 How to Run
-
+**Important**
+run all this command in one single terminal , otherwise use full path for files 
 1. **Clone the repository (open powershell)**  
     ```bash
+    cd Downloads
     git clone https://github.com/vishnu-iitp/LMS-iitp.git
     cd LMS-iitp
     ```

@@ -89,8 +89,8 @@ If your database starts empty, 10 classic books (e.g., *1984*, *The Hobbit*, *Fa
 
 1. **Clone the repository (open powershell)**  
     ```bash
-    git clone https://github.com/yourusername/library-management-system.git
-    cd library-management-system
+    git clone https://github.com/vishnu-iitp/LMS-iitp.git
+    cd LMS-iitp
     ```
 
 2. **Install dependencies**  

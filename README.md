@@ -88,30 +88,38 @@ If your database starts empty, 10 classic books (e.g., *1984*, *The Hobbit*, *Fa
 ## 🚀 How to Run
 **Important**<br>
 run all this command in one single terminal , otherwise use full path for files 
-1. **Clone the repository (open powershell)**  
+1. **Install git (if not already installed)**
+   ```bash
+   winget install --id Git.Git -e --source winget
+   ```
+2. **Clone the repository (open powershell)**  
     ```bash
     cd Downloads
     git clone https://github.com/vishnu-iitp/LMS-iitp.git
     cd LMS-iitp
     ```
 
-2. **Install dependencies**  
+3. **Install dependencies**  
     ```bash
     pip install -r requirements.txt
     ```
 
-3. **Create The database and run the sql code**  
-    I. Open Mysql workbench<br>
-    II. Use the local connection ( default username and password is root )<br>
-    III. Create schema (right click on lef pannel (Schema ) >>click on create schema  >> name it lms_db >> apply >> apply >> finish<br>
-    IV. file > open sql script >> choose the lms_db.sql >> click on thunder ⚡ icon to run it<br>
-4. **Now Run the Main.py file (open powershell )**
+4. **Create The database and run the sql code**
+    I. create first local connection (if not alreay created )
+   ```bash
+   mysql -u root -p
+   ```
+    II. Open Mysql workbench<br>
+    III. Use the local connection ( default username and password is root )<br>
+    IV. Create schema (right click on lef pannel (Schema ) >>click on create schema  >> name it lms_db >> apply >> apply >> finish<br>
+    V. file > open sql script >> choose the lms_db.sql >> click on thunder ⚡ icon to run it<br>
+6. **Now Run the Main.py file (open powershell )**
     ```python
     python main.py
     ```
  
-5. **first register and then login with the same username and password**
-6. **Enjoy**
+7. **first register and then login with the same username and password**
+8. **Enjoy**
 
 ---
 

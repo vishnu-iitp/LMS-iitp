@@ -111,7 +111,7 @@ run all this command in one single terminal , otherwise use full path for files
    ```
     II. Open Mysql workbench<br>
     III. Use the local connection ( default username and password is root )<br>
-    IV. Create schema (right click on lef pannel (Schema ) >>click on create schema  >> name it lms_db >> apply >> apply >> finish<br>
+    IV. Create schema (right click on left pannel (Schema ) >>click on create schema  >> name it lms_db >> apply >> apply >> finish<br>
     V. file > open sql script >> choose the lms_db.sql >> click on thunder ⚡ icon to run it<br>
 6. **Now Run the Main.py file (open powershell )**
     ```python

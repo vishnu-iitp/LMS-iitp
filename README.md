@@ -1,4 +1,4 @@
-# Library Management System (LMS) 📚
+# Library Management System (LMS) 
 
 A simple yet feature-rich **Library Management System** built using **Python** and **MariaDB**.
 
@@ -8,57 +8,57 @@ I created this project to learn backend development using Python and MariaDB, in
 
 ---
 
-## 🔍 Overview
+##  Overview
 
 The LMS uses **PyQt5** for the graphical interface and **MariaDB** as the database engine.  
 It supports user authentication, book inventory, member management, issuing/returning books, and visual reports.
 
-### 🔑 Core Features:
-- 🔎 Search and manage books
-- 👤 Add/edit members and users (with login)
-- 🔐 Password hashing using `hashlib`
-- 📆 Issue/return books with due dates
-- 📊 Top issued books chart
-- 🌗 Dark Mode UI toggle
+### Core Features:
+-  Search and manage books
+-  Add/edit members and users (with login)
+-  Password hashing using `hashlib`
+-  Issue/return books with due dates
+-  Top issued books chart
+-  Dark Mode UI toggle
 
 ---
 
-## ✨ Quick Tour (Screenshots)
+## Quick Tour (Screenshots)
 
-### 🏠 Home Tab
+###  Home Tab
 Welcome screen with personalized greeting and navigation instructions.
 ![Home Tab](/assets/home.png)
 
 ---
 
-### 📚 Books Tab
+###  Books Tab
 Search, view, and add books with detailed fields like title, author, publisher, ISBN, year, total copies, and available copies.
 ![Books Tab](/assets/books%20tab.png)
 
 ---
 
-### 🔁 Issue/Return Tab
+###  Issue/Return Tab
 Allows users to issue available books and return previously borrowed ones. Displays book details, issue date, and due date.
 ![Issue Return Tab](/assets/issue%20return%20tab.png)
 
 ---
 
-### 📈 Reports Tab
+###  Reports Tab
 Visualizes the top issued books using a clean bar chart powered by `matplotlib`.
 ![Reports Tab](/assets/reports.png)
 
 ---
 
-### ⚙️ Settings Tab
+###  Settings Tab
 Toggle dark mode to switch between light and dark themes.
 ![Settings Tab](/assets/settings.png)
 
 ---
 
-## 🛠️ Technologies Used
+## 🛠 Technologies Used
 
 - **Python 3**
-- **MariaDB**
+- **MariaDB using linux / MYSQL for windows**
 - **PyMySQL** — Database connection
 - **PyQt5** — GUI
 - **hashlib** — Password hashing
@@ -67,7 +67,7 @@ Toggle dark mode to switch between light and dark themes.
 
 ---
 
-## 📦 Database Tables
+##  Database Tables
 
 The system auto-creates these tables if they don't exist:
 - `books`
@@ -79,13 +79,13 @@ All with proper foreign key relationships for data consistency.
 
 ---
 
-## 📘 Sample Data
+##  Sample Data
 
 If your database starts empty, 10 classic books (e.g., *1984*, *The Hobbit*, *Fahrenheit 451*) are automatically added for testing purposes.
 
 ---
 
-## 🚀 How to Run
+##  How to Run
 **Important**<br>
 run all this command in one single terminal , otherwise use full path for files 
 1. **Install git (if not already installed)**
@@ -123,12 +123,12 @@ run all this command in one single terminal , otherwise use full path for files
 
 ---
 
-## 🙌 Contributing
+##  Contributing
 
 Pull requests are welcome! If you'd like to add a feature or fix a bug, feel free to fork the repo and make a PR.
 
 ---
 
-## 📄 License
+##  License
 
 This project is open-source under the MIT License.

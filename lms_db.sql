@@ -36,7 +36,12 @@ INSERT INTO `books` VALUES
 (3,'The Great Gatsby','F. Scott Fitzgerald','Charles Scribner\'s Sons','9780743273565',1925,4,4,'2025-06-10 19:39:35'),
 (4,'The Catcher in the Rye','J.D. Salinger','Little, Brown and Company','9780316769488',1951,3,3,'2025-06-10 19:39:35'),
 (5,'The Hobbit','J.R.R. Tolkien','George Allen & Unwin','9780547928227',1937,5,5,'2025-06-10 19:39:35'),
-(6,'Fahrenheit 451','Ray Bradbury','Ballantine Books','9781451673319',1953,4,4,'2025-06-10 19:39:35');
+(6,'Fahrenheit 451','Ray Bradbury','Ballantine Books','9781451673319',1953,4,4,'2025-06-10 19:39:35'),
+(7,'Let Us C','Yashavant Kanetkar','BPB Publications','9788176566218',1998,5,5,'2025-07-09 10:00:00'),
+(8,'Programming in ANSI C','E. Balagurusamy','McGraw Hill','9781259025804',2008,4,4,'2025-07-09 10:00:00'),
+(9,'Data Structures Using C','Reema Thareja','Oxford University Press','9780195676935',2011,4,4,'2025-07-09 10:00:00'),
+(10,'Computer Fundamentals','Rajaraman V','PHI Learning','9788120311725',1996,3,3,'2025-07-09 10:00:00'),
+(11,'Object Oriented Programming with C++','E. Balagurusamy','McGraw Hill','9789352607991',2001,4,4,'2025-07-09 10:00:00');
 ALTER TABLE `books` ENABLE KEYS;
 UNLOCK TABLES;
 
@@ -119,3 +124,4 @@ SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT;
 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS;
 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION;
 SET SQL_NOTES=@OLD_SQL_NOTES;
+
